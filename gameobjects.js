@@ -77,6 +77,10 @@ class Player extends Sprite {
     this.onTheGround = true;
   }
 
+  applyForce(f) {
+    this.acceleration.add(f);
+  }
+
   update(dt) {
     super.update(dt);
 
@@ -98,7 +102,9 @@ class Player extends Sprite {
       this.pos.sub(new Vector(canvas.width / 3 * dt,0));
     }
 
+    this.velocity.add(this.acceleration);
     this.pos.add(this.velocity);
+    this.acceleration.mult(0);
     this.velocity.limit(1000 * dt);
   }
 

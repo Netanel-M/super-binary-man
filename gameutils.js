@@ -1,4 +1,5 @@
 function generateRandomSequence() {
+  // generate a new binary sequence
   let newSequence = "";
   for(let i = 0; i < sequence.length; i++) {
     randomNumber = Math.random();
@@ -8,7 +9,7 @@ function generateRandomSequence() {
       newSequence += "1";
     }
   }
-  
+  // make sure the chosen sequence doesn't sum to zero
   if(parseInt(newSequence, 2) > 0) {
     sequence = newSequence;
   } else {
@@ -18,6 +19,7 @@ function generateRandomSequence() {
 }
 
 function resetBlocks() {
+  // reset blocks to default state
   generateRandomSequence();
   for(let i = 0; i < blocks.length; i++) {
     blocks[i].color = "orange";

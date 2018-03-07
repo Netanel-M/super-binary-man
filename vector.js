@@ -45,4 +45,41 @@ class Vector {
     }
   }
 
+  get() {
+    return new Vector(this.x, this.y);
+  }
+
+  dist(v) {
+    let dx = this.x - v.x;
+    let dy = this.y - v.y;
+    return Math.sqrt(dx * dx + dy*dy);
+  }
+
+  rotate(theta) {
+    let temp = this.x;
+    this.x = this.x * Math.cos(theta) - this.y * Math.sin(theta);
+    this.y = temp * Math.sin(theta) + this.y * Math.cos(theta);
+  }
+
+  angleBetween(t) {
+    if(this.x === 0 && this.y === 0) {
+      return 0.0;
+    }
+
+    if(t.x === 0 && t.y === 0) {
+      return 0.0;
+    }
+
+    let dot = this.x * t.x + this.y * t.y;
+    let thisMag = Math.sqrt(this.x * this.x + this.y * this.y);
+    let tMag = Math.sqrt(t.x * t.x + t.y * t.y);
+    let amt = dot / (thisMag * tMag);
+    if (amt <= -1) {
+      return Math.PI;
+    } else if (amt >= 1) {
+      return 0;
+    }
+    return Math.acos(amt);
+  }
+
 }

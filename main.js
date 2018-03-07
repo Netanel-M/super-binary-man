@@ -57,6 +57,7 @@ function mainLoop(TIMESTAMP) {
 
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
+  // draw texts
   ctx.font = "32pt monospace";
   let fontWidth = ctx.measureText("Goal: "+solution).width
   ctx.fillText("Goal: "+ solution, canvas.width-fontWidth-100, 100);
@@ -79,10 +80,13 @@ function mainLoop(TIMESTAMP) {
   this.player.draw();
 
   this.player.update(dt);
+
   // update blocks
   for (let i=0; i<this.blocks.length; i++) {
     this.blocks[i].update(dt);
   }
+
+  // update collisions
 
   let collisions = [];
 
