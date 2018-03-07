@@ -1,8 +1,5 @@
 function init() {
 
-  //let zoomScale = 'scale(100)';
-  //document.body.style.transform = zoomScale;
-
   this.canvas = document.querySelector("#clickerCanvas");
   this.ctx = canvas.getContext("2d");
 
