@@ -61,7 +61,7 @@ class Vector {
     this.y = temp * Math.sin(theta) + this.y * Math.cos(theta);
   }
 
-  angleBetween(t) {
+  angleTo(t) {
     if(this.x === 0 && this.y === 0) {
       return 0.0;
     }
@@ -79,7 +79,12 @@ class Vector {
     } else if (amt >= 1) {
       return 0;
     }
-    return Math.acos(amt);
+    return Math.acos(amt) * (180 / Math.PI);
+  }
+
+  heading() {
+    let angle = Math.atan2(this.x,this.y);
+    return angle * (180 / Math.PI);
   }
 
 }

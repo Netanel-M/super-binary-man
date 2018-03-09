@@ -11,7 +11,7 @@ function init() {
   this.solution = parseInt(sequence, 2);
 
   this.oldTime = 0;
-  this.mousePos = {x:0, y:0};
+  this.mousePos = new Vector(0,0);
 
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -20,15 +20,20 @@ function init() {
   this.platforms = [];
   this.blocks = [];
   this.walls = [];
+  this.allKeys = [];
 
   this.soundSystem = new SoundSystem();
 
-  let floor = new Rect(50,
+  let floor = new Rect(0,
     canvas.height-50,
     canvas.width,
     50);
-  let leftWall = new Rect(0,0, 50, canvas.height)
-  let rightWall = new Rect(canvas.width-50,0, 50, canvas.height)
+    let floor2 = new Rect(0,
+      canvas.height/2-100,
+      canvas.width,
+      50);
+  let leftWall = new Rect(0,0, 50, canvas.height - 200)
+  let rightWall = new Rect(canvas.width-50,0, 50, canvas.height-200)
 
     for(let i = sequence.length-1; i>-1; i--) {
       let b = new BinaryBlock(
@@ -40,8 +45,10 @@ function init() {
     }
 
   this.platforms.push(floor);
+  this.platforms.push(floor2);
   this.walls.push(leftWall);
   this.walls.push(rightWall);
+
 
   this.player = new Player(canvas.width/2-25,canvas.height-150, 50, 75);
 
@@ -60,10 +67,11 @@ function mainLoop(TIMESTAMP) {
   // draw texts
   ctx.font = "32pt monospace";
   let fontWidth = ctx.measureText("Goal: "+solution).width
-  ctx.fillText("Goal: "+ solution, canvas.width-fontWidth-100, 100);
-  let fontWidthAccum = ctx.measureText("Accumulator: " + accum).width;
-  ctx.fillText("Accumulator: " + accum, canvas.width/2 - fontWidthAccum/2, 100);
+  ctx.fillText("Goal: "+ solution, canvas.width/2-fontWidth/2, 200);
+  let fontWidthAccum = ctx.measureText("Sum: " + accum).width;
+  ctx.fillText("Sum: " + accum, canvas.width/2 - fontWidthAccum/2, 100);
   ctx.fillText("Score: "  + score, canvas.width/16, 100);
+
   // draw platforms
   for (let i=0; i<this.platforms.length; i++) {
     this.platforms[i].draw();
@@ -77,10 +85,21 @@ function mainLoop(TIMESTAMP) {
     this.blocks[i].draw();
   }
 
+  // draw and update player
   this.player.draw();
 
   this.player.update(dt);
 
+  if(player.pos.x >= canvas.width + player.w-1) {
+    player.pos.x = 0;
+    player.pos.y = canvas.height-player.h-75;
+  } else if(player.pos.x <= 0 - player.w+1) {
+    player.pos.x = canvas.width;
+    player.pos.y = canvas.height-player.h-75;
+  }
+  if(player.pos.y >= canvas.height + player.h) {
+    player.pos.y = 0 - player.h;
+  }
   // update blocks
   for (let i=0; i<this.blocks.length; i++) {
     this.blocks[i].update(dt);

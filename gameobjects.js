@@ -85,11 +85,16 @@ class Player extends Sprite {
     super.update(dt);
 
     if (this.onTheGround === false) {
-      this.velocity.add(new Vector(0,canvas.height * 0.03 *dt));
+      this.acceleration.add(new Vector(0,canvas.height * 0.03 *dt));
+    }
+
+    if(this.jumpDown === true) {
+      this.pos.y += player.h+50;
+      this.jumpDown = false;
     }
 
     if (this.jump === true && this.onTheGround === true) {
-      this.velocity.sub(new Vector(0,canvas.height*5 * dt))
+      this.acceleration.sub(new Vector(0,canvas.height*7 * dt))
       this.onTheGround = false;
       soundSystem.jumpSound.play();
     }
@@ -128,7 +133,6 @@ class BinaryBlock extends Sprite {
     let width = ctx.measureText(this.number).width
     ctx.fillText(this.number, this.w/2-width/2, this.h/2+25/2);
     ctx.restore();
-
   }
 
   update(dt) {

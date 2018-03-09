@@ -64,17 +64,11 @@ function collidePlayerWithBlocks(sprite, secondSprite) {
 
     if ( sprite.right <= secondSprite.left ) { // something is to the right
       sprite.pos.x = secondSprite.left-sprite.w;
-      if ( sprite.goRight === true ) {
-        sprite.goRight = false;
-      }
       return true
     }
 
     if ( sprite.left >= secondSprite.right ) { // something is to the left
       sprite.pos.x = secondSprite.right;
-      if( sprite.goLeft === true ) {
-        sprite.goLeft = false;
-      }
       return true
     }
 
