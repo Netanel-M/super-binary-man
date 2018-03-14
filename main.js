@@ -28,16 +28,21 @@ function init() {
     canvas.height-50,
     canvas.width,
     50);
-    let floor2 = new Rect(0,
+  let floor2 = new Rect(0,
       canvas.height/2-100,
-      canvas.width,
+      canvas.width-canvas.width/2-100,
       50);
+  let floor3 = new Rect(canvas.width/2+100,
+          canvas.height/2-100,
+          canvas.width-canvas.width/2,
+          50);
   let leftWall = new Rect(0,0, 50, canvas.height - 200)
   let rightWall = new Rect(canvas.width-50,0, 50, canvas.height-200)
 
     for(let i = sequence.length-1; i>-1; i--) {
       let b = new BinaryBlock(
-        canvas.width - (i * (canvas.width/6) + (canvas.width/5)),
+        //canvas.width - (i * (canvas.width/6) + (canvas.width/5)) + 25,
+        canvas.width - (i * (canvas.width/8)) - sequence.length*(canvas.width/18.7),
         canvas.height - 400,
         70, 70,
         2**i)
@@ -46,11 +51,17 @@ function init() {
 
   this.platforms.push(floor);
   this.platforms.push(floor2);
+  this.platforms.push(floor3);
   this.walls.push(leftWall);
   this.walls.push(rightWall);
 
 
   this.player = new Player(canvas.width/2-25,canvas.height-150, 50, 75);
+
+  this.testEnemy = new Enemy(50, 0, 50, 75);
+
+  this.enemies = [];
+  this.enemies.push(testEnemy);
 
   initEvents();
 
@@ -90,39 +101,14 @@ function mainLoop(TIMESTAMP) {
 
   this.player.update(dt);
 
-  if(player.pos.x >= canvas.width + player.w-1) {
-    player.pos.x = 0;
-    player.pos.y = canvas.height-player.h-75;
-  } else if(player.pos.x <= 0 - player.w+1) {
-    player.pos.x = canvas.width;
-    player.pos.y = canvas.height-player.h-75;
+  for(let i = 0; i < enemies.length; i++) {
+    enemies[i].draw();
+    enemies[i].update(dt);
   }
-  if(player.pos.y >= canvas.height + player.h) {
-    player.pos.y = 0 - player.h;
-  }
+
   // update blocks
   for (let i=0; i<this.blocks.length; i++) {
     this.blocks[i].update(dt);
-  }
-
-  // update collisions
-
-  let collisions = [];
-
-  for(let i=0; i<this.platforms.length; i++) {
-    collisions.push(collidePlayerWithPlatforms(this.player,this.platforms[i]))
-  }
-
-  for(let i=0; i<this.walls.length; i++) {
-    collisions.push(collidePlayerWithWalls(this.player,this.walls[i]))
-  }
-
-  for(let i=0; i<this.blocks.length; i++) {
-    collisions.push(collidePlayerWithBlocks(this.player,this.blocks[i]))
-  }
-
-  if(collisions.includes(true)) {} else {
-    player.onTheGround = false;
   }
 
   //player.previousPos = new Vector(player.pos.x, player.pos.y); // no longer necessary for now

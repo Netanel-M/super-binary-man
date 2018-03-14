@@ -45,6 +45,8 @@ class Rect {
 class Sprite extends Rect {
   constructor(x,y,w,h,color="red") {
     super(x,y,w,h);
+    this.velocity = new Vector(0,0);
+    this.acceleration = new Vector(0,0);
     this.color = color;
   }
 
@@ -65,12 +67,34 @@ class Sprite extends Rect {
 
 }
 
+class Enemy extends Sprite {
+  constructor(x,y,w,h,color="red") {
+    super(x,y,w,h);
+    this.color = color
+    this.onTheGround = false;
+
+  }
+
+  update(dt) {
+    super.update(dt);
+
+    if (this.onTheGround === false) {
+      this.acceleration.add(new Vector(0,canvas.height * 0.03 *dt));
+
+    }
+
+    this.velocity.add(this.acceleration);
+    this.pos.add(this.velocity);
+    this.acceleration.mult(0);
+    this.velocity.limit(1000 * dt);
+  }
+
+}
+
 class Player extends Sprite {
   constructor(x,y,w,h, color="blue") {
     super(x,y,w,h);
     this.color = color;
-    this.velocity = new Vector(0,0);
-    this.acceleration = new Vector(0,0);
     this.goRight = false;
     this.goLeft = false;
     this.jump = false;
@@ -111,6 +135,44 @@ class Player extends Sprite {
     this.pos.add(this.velocity);
     this.acceleration.mult(0);
     this.velocity.limit(1000 * dt);
+
+    this.warp();
+    this.updateCollisions();
+  }
+
+  updateCollisions() {
+    // update collisions
+
+    let collisions = [];
+
+    for(let i=0; i < platforms.length; i++) {
+      collisions.push(collidePlayerWithPlatforms(this, platforms[i]))
+    }
+
+    for(let i=0; i < walls.length; i++) {
+      collisions.push(collidePlayerWithWalls(this, walls[i]))
+    }
+
+    for(let i=0; i < blocks.length; i++) {
+      collisions.push(collidePlayerWithBlocks(this , blocks[i]))
+    }
+
+    if(collisions.includes(true)) {} else {
+      player.onTheGround = false;
+    }
+  }
+
+  warp() {
+    if(player.pos.x >= canvas.width + player.w-1) {
+      player.pos.x = 0;
+      player.pos.y = canvas.height-player.h-75;
+    } else if(player.pos.x <= 0 - player.w+1) {
+      player.pos.x = canvas.width;
+      player.pos.y = canvas.height-player.h-75;
+    }
+    if(player.pos.y >= canvas.height + player.h) {
+      player.pos.y = 0 - player.h;
+    }
   }
 
 }
