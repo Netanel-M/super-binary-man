@@ -165,7 +165,7 @@ class Player extends Sprite {
     }
 
     if(collisions.includes(true)) {} else {
-      player.onTheGround = false;
+      this.onTheGround = false;
     }
   }
 
