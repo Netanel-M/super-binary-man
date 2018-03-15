@@ -3,15 +3,18 @@ function init() {
   this.canvas = document.querySelector("#clickerCanvas");
   this.ctx = canvas.getContext("2d");
 
+  //Sequence related section
   this.sequence = "00000";
   this.accum = 0;
   this.score = 0;
-
   generateRandomSequence();
   this.solution = parseInt(sequence, 2);
 
-  this.oldTime = 0;
+  this.oldTime = 0; // for calculating delta time
+
+  // control related section
   this.mousePos = new Vector(0,0);
+  this.allKeys = [];
 
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -20,7 +23,6 @@ function init() {
   this.platforms = [];
   this.blocks = [];
   this.walls = [];
-  this.allKeys = [];
 
   this.soundSystem = new SoundSystem();
 
@@ -41,7 +43,6 @@ function init() {
 
     for(let i = sequence.length-1; i>-1; i--) {
       let b = new BinaryBlock(
-        //canvas.width - (i * (canvas.width/6) + (canvas.width/5)) + 25,
         canvas.width - (i * (canvas.width/8)) - sequence.length*(canvas.width/18.7),
         canvas.height - 400,
         70, 70,

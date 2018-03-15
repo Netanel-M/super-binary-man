@@ -72,7 +72,7 @@ class Enemy extends Sprite {
     super(x,y,w,h);
     this.color = color
     this.onTheGround = false;
-
+    this.collisions = [];
   }
 
   update(dt) {
@@ -87,8 +87,15 @@ class Enemy extends Sprite {
     this.pos.add(this.velocity);
     this.acceleration.mult(0);
     this.velocity.limit(1000 * dt);
+
+    this.updateCollisions();
+
   }
 
+
+  updateCollisions() {
+
+  }
 }
 
 class Player extends Sprite {
@@ -146,15 +153,15 @@ class Player extends Sprite {
     let collisions = [];
 
     for(let i=0; i < platforms.length; i++) {
-      collisions.push(collidePlayerWithPlatforms(this, platforms[i]))
+      collisions.push(collideSpriteWithPlatforms(this, platforms[i]))
     }
 
     for(let i=0; i < walls.length; i++) {
-      collisions.push(collidePlayerWithWalls(this, walls[i]))
+      collisions.push(collideSpriteWithWalls(this, walls[i]))
     }
 
     for(let i=0; i < blocks.length; i++) {
-      collisions.push(collidePlayerWithBlocks(this , blocks[i]))
+      collisions.push(collideSpriteWithBlocks(this, blocks[i]))
     }
 
     if(collisions.includes(true)) {} else {

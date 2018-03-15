@@ -1,4 +1,4 @@
-function collidePlayerWithPlatforms(sprite, secondSprite) {
+function collideSpriteWithPlatforms(sprite, secondSprite) {
   //let deltaPos = sprite.previousPos.returnSub(sprite.pos);
   //deltaPos.normalize();
   // These ifs are for actual collisions
@@ -17,12 +17,11 @@ function collidePlayerWithPlatforms(sprite, secondSprite) {
 
 }
 
-function collidePlayerWithWalls(sprite, secondSprite) {
+function collideSpriteWithWalls(sprite, secondSprite) {
   //let deltaPos = sprite.previousPos.returnSub(sprite.pos);
   //deltaPos.normalize();
   // These ifs are for actual collisions
   if ( sprite.intersectsWith(secondSprite) ) {
-    //sprite.pos = new Vector(sprite.pos.x+deltaPos.x, sprite.pos.y+deltaPos.y); //No longer necessary for now
     //  this if are for checking whether something is underneath the player
     if ( sprite.bottom <= secondSprite.top ){ // something is underneath
       sprite.onTheGround = true;
@@ -53,7 +52,7 @@ function collidePlayerWithWalls(sprite, secondSprite) {
 
 }
 
-function collidePlayerWithBlocks(sprite, secondSprite) {
+function collideSpriteWithBlocks(sprite, secondSprite) {
   if( sprite.intersectsWith(secondSprite) ) {
     if ( sprite.bottom <= secondSprite.top ){ // something is above
       sprite.onTheGround = true;
