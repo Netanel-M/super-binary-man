@@ -94,8 +94,27 @@ class Enemy extends Sprite {
 
 
   updateCollisions() {
+    // update collisions
 
+    let collisions = [];
+
+    for(let i=0; i < platforms.length; i++) {
+      collisions.push(collideSpriteWithPlatforms(this, platforms[i]))
+    }
+
+    for(let i=0; i < walls.length; i++) {
+      collisions.push(collideSpriteWithWalls(this, walls[i]))
+    }
+
+    for(let i=0; i < blocks.length; i++) {
+      collisions.push(collideSpriteWithBlocks(this, blocks[i]))
+    }
+
+    if(collisions.includes(true)) {} else {
+      this.onTheGround = false;
+    }
   }
+
 }
 
 class Player extends Sprite {
@@ -170,15 +189,15 @@ class Player extends Sprite {
   }
 
   warp() {
-    if(player.pos.x >= canvas.width + player.w-1) {
-      player.pos.x = 0;
-      player.pos.y = canvas.height-player.h-75;
-    } else if(player.pos.x <= 0 - player.w+1) {
-      player.pos.x = canvas.width;
-      player.pos.y = canvas.height-player.h-75;
+    if(this.pos.x >= canvas.width + this.w-1) {
+      this.pos.x = 0;
+      this.pos.y = canvas.height-this.h-75;
+    } else if(this.pos.x <= 0 - this.w+1) {
+      this.pos.x = canvas.width;
+      this.pos.y = canvas.height-this.h-75;
     }
-    if(player.pos.y >= canvas.height + player.h) {
-      player.pos.y = 0 - player.h;
+    if(this.pos.y >= canvas.height + this.h) {
+      this.pos.y = 0 - this.h;
     }
   }
 
