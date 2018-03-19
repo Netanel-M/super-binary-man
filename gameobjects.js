@@ -45,6 +45,7 @@ class Rect {
 class Sprite extends Rect {
   constructor(x,y,w,h,color="red") {
     super(x,y,w,h);
+    this.originalPos = new Vector(this.pos.x, this.pos.y);
     this.velocity = new Vector(0,0);
     this.acceleration = new Vector(0,0);
     this.color = color;
@@ -65,6 +66,35 @@ class Sprite extends Rect {
     this.right = this.pos.x+this.w;
   }
 
+  resetPosition() {
+    this.pos = new Vector(this.originalPos.x, this.originalPos.y);;
+  }
+
+  warp() {
+    if(this.pos.x >= canvas.width + this.w-1) {
+      // if sprite is past the right edge of the screen
+      this.pos.x = 0;
+      if(this.pos.y > canvas.height/2) { // if sprite is at lower floor
+        this.pos.y = upperFloorY - this.h - 75
+      } else if(this.pos.y < canvas.height/2) { // if sprite is at upper floor
+        this.pos.y = lowerFloorY - this.h - 75
+      }
+      //this.pos.y = canvas.height-this.h-75;
+    } else if(this.pos.x <= 0 - this.w+1) {
+      // if sprite is past the left edge of the screen
+      this.pos.x = canvas.width;
+      if(this.pos.y > canvas.height/2) { // if sprite is at lower floor
+        this.pos.y = upperFloorY - this.h - 75
+      } else if(this.pos.y < canvas.height/2) { // if sprite is at upper floor
+        this.pos.y = lowerFloorY - this.h - 75
+      }
+      //this.pos.y = canvas.height-this.h-75;
+    }
+    if(this.pos.y >= canvas.height + this.h) {
+      this.pos.y = 0 - this.h;
+    }
+  }
+
 }
 
 class Enemy extends Sprite {
@@ -75,12 +105,21 @@ class Enemy extends Sprite {
     this.collisions = [];
   }
 
+  applyForce(f) {
+    this.acceleration.add(f);
+  }
+
   update(dt) {
     super.update(dt);
 
     if (this.onTheGround === false) {
       this.acceleration.add(new Vector(0,canvas.height * 0.03 *dt));
-
+    } else {
+      if(this.direction === "right") {
+        this.applyForce(new Vector( (this.speed * dt), 0));
+      } else if (this.direction === "left") {
+        this.applyForce(new Vector( -(this.speed * dt), 0));
+      }
     }
 
     this.velocity.add(this.acceleration);
@@ -89,6 +128,7 @@ class Enemy extends Sprite {
     this.velocity.limit(1000 * dt);
 
     this.updateCollisions();
+    this.warp();
 
   }
 
@@ -117,6 +157,47 @@ class Enemy extends Sprite {
 
 }
 
+class DumDum extends Enemy {
+  constructor(x,y,w,h, color="red") {
+    super(x,y,w,h);
+    this.chooseRandomSpeed();
+    this.chooseRandomDirection();
+  }
+
+  update(dt) {
+    super.update(dt);
+    let dice = Math.floor(Math.random() * 200);
+    if(dice === 0) {
+      this.chooseRandomSpeed();
+      this.chooseRandomDirection();
+    }
+  }
+
+  chooseRandomDirection() {
+    let direction = Math.floor(Math.random() * 2);
+    if(direction === 0) {
+      this.direction = "left";
+      return "left";
+    } else {
+      this.direction = "right";
+      return "right";
+    }
+  }
+
+  chooseRandomSpeed() {
+    this.speed = Math.random() * (400 - 150) + 150;
+  }
+
+  flipDirection() {
+    if(this.direction === "left") {
+      this.direction = "right";
+    } else {
+      this.direction = "left";
+    }
+  }
+
+}
+
 class Player extends Sprite {
   constructor(x,y,w,h, color="blue") {
     super(x,y,w,h);
@@ -125,6 +206,7 @@ class Player extends Sprite {
     this.goLeft = false;
     this.jump = false;
     this.onTheGround = true;
+    this.life = 3;
   }
 
   applyForce(f) {
@@ -186,18 +268,12 @@ class Player extends Sprite {
     if(collisions.includes(true)) {} else {
       this.onTheGround = false;
     }
+
   }
 
-  warp() {
-    if(this.pos.x >= canvas.width + this.w-1) {
-      this.pos.x = 0;
-      this.pos.y = canvas.height-this.h-75;
-    } else if(this.pos.x <= 0 - this.w+1) {
-      this.pos.x = canvas.width;
-      this.pos.y = canvas.height-this.h-75;
-    }
-    if(this.pos.y >= canvas.height + this.h) {
-      this.pos.y = 0 - this.h;
+  collideWithEnemy(enemy) {
+    if((collideSpriteWithSprite(player, enemy) === true)) {
+      resetLevel(true);
     }
   }
 
@@ -246,6 +322,12 @@ class BinaryBlock extends Sprite {
             soundSystem.rightBlockSound.play();
             accum += this.number;
           } else {
+            // add dumdum related code here ->
+            for(let i = 0; i < enemies.length; i++) {
+              if(Math.random() > 0.5) {
+                enemies[i].flipDirection();
+              }
+            }
             this.color = "red";
             soundSystem.wrongBlockSound.play();
             score-= this.number;
@@ -253,9 +335,8 @@ class BinaryBlock extends Sprite {
           // check if sequence is complete and if so reset the score blocks and accum
           if(parseInt(sequence, 2) === accum) {
             score += accum;
-            accum = 0;
             soundSystem.successSound.play();
-            resetBlocks();
+            resetLevel(false);
           }
           break;
         }
