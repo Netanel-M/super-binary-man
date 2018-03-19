@@ -83,3 +83,11 @@ function collideSpriteWithBlocks(sprite, secondSprite) {
   }
 
 }
+
+function collideSpriteWithSprite(sprite, secondSprite) {
+  if( sprite.intersectsWith(secondSprite) ) {
+      return true
+    } else {
+      return false;
+    }
+}

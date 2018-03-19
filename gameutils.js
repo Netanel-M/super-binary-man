@@ -18,6 +18,25 @@ function generateRandomSequence() {
 
 }
 
+function resetLevel(lifeDown) {
+  for(let i = 0; i < enemies.length; i++) {
+    enemies[i].resetPosition();
+    enemies[i].onTheGround = false;
+  }
+  player.resetPosition();
+  player.onTheGround = false;
+  if(lifeDown === true) {
+    player.life -= 1;    
+  }
+
+  accum = 0;
+  resetBlocks();
+
+  if(player.life <= 0) {
+    gameOver();
+  }
+}
+
 function resetBlocks() {
   // reset blocks to default state
   generateRandomSequence();
