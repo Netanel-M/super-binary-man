@@ -15,7 +15,8 @@ function init() {
   // control related section
   this.mousePos = new Vector(0,0);
   this.allKeys = [];
-
+  this.gamePad = navigator.getGamepads()[0]
+  console.log(gamePad);
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   this.w, this.h = canvas.width, canvas.height;
@@ -81,7 +82,6 @@ function mainLoop(TIMESTAMP) {
   oldTime = newTime;
 
   ctx.clearRect(0,0,canvas.width,canvas.height);
-
   // draw texts
   ctx.font = "32pt monospace";
   let fontWidth = ctx.measureText("Goal: "+solution).width
