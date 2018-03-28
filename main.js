@@ -16,7 +16,6 @@ function init() {
   this.mousePos = new Vector(0,0);
   this.allKeys = [];
   this.gamePad = navigator.getGamepads()[0]
-  console.log(gamePad);
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   this.w, this.h = canvas.width, canvas.height;
@@ -80,6 +79,9 @@ function mainLoop(TIMESTAMP) {
   newTime = TIMESTAMP / 1000
   dt = newTime - oldTime;
   oldTime = newTime;
+
+  // gamepad related (there are no events for gamepads except in firefox)
+  gamePadDown();
 
   ctx.clearRect(0,0,canvas.width,canvas.height);
   // draw texts

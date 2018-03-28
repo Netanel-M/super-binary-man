@@ -15,11 +15,7 @@ function gamepadConnected(event) {
 function keyDown(event) {
   allKeys.push(event.code);
 
-  if(allKeys.includes("KeyS") && allKeys.includes("Space")) {
-    player.jumpDown = true;
-  }
-
-  else if(event.code === "KeyD" || event.code === "ArrowRight") {
+  if(event.code === "KeyD" || event.code === "ArrowRight") {
     player.goRight = true;
   }
   else if (event.code === "KeyA" || event.code === "ArrowLeft") {
@@ -45,6 +41,32 @@ function keyUp(event) {
   }
   else if (event.code === "KeyS") {
     player.jump = false;
+  }
+}
+
+function gamePadDown() {
+  if (gamePad !== undefined) {
+
+    if(gamePad.axes[0] >= 0.5) {
+      player.goRight = true;
+    } else if(gamePad.axes[0] <= -0.5) {
+      player.goLeft = true;
+    } else {
+      player.goLeft = false;
+      player.goRight = false;
+    }
+
+    if(gamePad.buttons[12].pressed === true) {
+      player.goRight = true;
+    } else if(gamePad.buttons[11].pressed === true) {
+      player.goLeft = true;
+    }
+    if(gamePad.buttons[0].pressed === true ){
+      player.jump = true;
+    } else if(gamePad.buttons[0].pressed === false) {
+      player.jump = false;
+    }
+
   }
 }
 
