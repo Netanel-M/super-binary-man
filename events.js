@@ -45,7 +45,7 @@ function keyUp(event) {
 }
 
 function gamePadDown() {
-  if (gamePad !== undefined) {
+  if (gamePad !== undefined || gamePad !== null) {
 
     if(gamePad.axes[0] >= 0.5) {
       player.goRight = true;
