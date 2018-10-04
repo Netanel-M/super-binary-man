@@ -220,6 +220,11 @@ class Player extends Sprite {
       this.acceleration.add(new Vector(0,canvas.height * 0.03 *dt));
     }
 
+    if(this.jumpDown === true) {
+      this.pos.y += player.h+50;
+      this.jumpDown = false;
+    }
+
     if (this.jump === true && this.onTheGround === true) {
       this.acceleration.sub(new Vector(0,canvas.height*7 * dt))
       this.onTheGround = false;
