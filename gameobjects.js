@@ -49,6 +49,7 @@ class Sprite extends Rect {
     this.velocity = new Vector(0,0);
     this.acceleration = new Vector(0,0);
     this.color = color;
+    this.onTheGround = false;
   }
 
   draw() {
@@ -75,18 +76,22 @@ class Sprite extends Rect {
       // if sprite is past the right edge of the screen
       this.pos.x = 0;
       if(this.pos.y > canvas.height/2) { // if sprite is at lower floor
-        this.pos.y = upperFloorY - this.h - 75
+        this.pos.y = upperFloorY - this.h
+        this.onTheGround = true;
       } else if(this.pos.y < canvas.height/2) { // if sprite is at upper floor
-        this.pos.y = lowerFloorY - this.h - 75
+        this.pos.y = lowerFloorY - this.h
+        this.onTheGround = true;
       }
       //this.pos.y = canvas.height-this.h-75;
     } else if(this.pos.x <= 0 - this.w+1) {
       // if sprite is past the left edge of the screen
       this.pos.x = canvas.width;
       if(this.pos.y > canvas.height/2) { // if sprite is at lower floor
-        this.pos.y = upperFloorY - this.h - 75
+        this.pos.y = upperFloorY - this.h
+        this.onTheGround = true;
       } else if(this.pos.y < canvas.height/2) { // if sprite is at upper floor
-        this.pos.y = lowerFloorY - this.h - 75
+        this.pos.y = lowerFloorY - this.h
+        this.onTheGround = true;
       }
       //this.pos.y = canvas.height-this.h-75;
     }
@@ -101,7 +106,6 @@ class Enemy extends Sprite {
   constructor(x,y,w,h,color="red") {
     super(x,y,w,h);
     this.color = color
-    this.onTheGround = false;
     this.collisions = [];
   }
 
@@ -232,11 +236,11 @@ class Player extends Sprite {
     }
 
     if(this.goRight === true) {
-      this.pos.add(new Vector(canvas.width / 3 * dt,0));
+      this.pos.add(new Vector(500 * dt,0));
     }
 
     else if (this.goLeft === true) {
-      this.pos.sub(new Vector(canvas.width / 3 * dt,0));
+      this.pos.sub(new Vector(500 * dt,0));
     }
 
     this.velocity.add(this.acceleration);

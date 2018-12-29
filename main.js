@@ -15,8 +15,7 @@ function init() {
   // control related section
   this.mousePos = new Vector(0,0);
   this.allKeys = [];
-  this.gamePad = navigator.getGamepads()[0]
-  console.log(gamePad);
+
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   this.w, this.h = canvas.width, canvas.height;

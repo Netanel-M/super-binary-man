@@ -3,14 +3,7 @@ function initEvents() {
   canvas.addEventListener('mousedown', mouseDown);
   window.addEventListener('keydown', keyDown);
   window.addEventListener('keyup', keyUp);
-  window.addEventListener("gamepadconnected", gamepadConnected)
 }
-
-
-function gamepadConnected(event) {
-  var gp = navigator.getGamepads()[event.gamepad.index];
-  gamePad = gp;
-};
 
 function keyDown(event) {
   allKeys.push(event.code);
