@@ -46,6 +46,12 @@ function collideSpriteWithWalls(sprite, secondSprite) {
       return true
     }
 
+    if ( sprite.top <= secondSprite.bottom  ){ // something is above
+      sprite.pos.y = secondSprite.bottom;
+      sprite.velocity.mult(0);
+      return true
+    }
+
   } else {
     return false;
   }
@@ -54,7 +60,7 @@ function collideSpriteWithWalls(sprite, secondSprite) {
 
 function collideSpriteWithBlocks(sprite, secondSprite) {
   if( sprite.intersectsWith(secondSprite) ) {
-    if ( sprite.bottom <= secondSprite.top ){ // something is above
+    if ( sprite.bottom <= secondSprite.top ){ // something is underneath
       sprite.onTheGround = true;
       sprite.pos.y = secondSprite.top-sprite.h;
       sprite.velocity.mult(0);
@@ -71,7 +77,7 @@ function collideSpriteWithBlocks(sprite, secondSprite) {
       return true
     }
 
-    if ( sprite.top <= secondSprite.bottom  ){ // something is underneath
+    if ( sprite.top <= secondSprite.bottom  ){ // something is above
       sprite.pos.y = secondSprite.originalY+sprite.h;
       secondSprite.toggle();
       sprite.velocity.mult(0);

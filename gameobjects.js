@@ -106,7 +106,6 @@ class Enemy extends Sprite {
   constructor(x,y,w,h,color="red") {
     super(x,y,w,h);
     this.color = color
-    this.collisions = [];
   }
 
   applyForce(f) {

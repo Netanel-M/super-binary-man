@@ -62,7 +62,6 @@ function init() {
   this.walls.push(leftWall);
   this.walls.push(rightWall);
 
-
   this.player = new Player(canvas.width/2-25,canvas.height-150, 50, 75);
 
   this.testEnemy = new DumDum(50, 0, 50, 75);
@@ -114,7 +113,6 @@ function mainLoop(TIMESTAMP) {
     enemies[i].update(dt);
 
     player.collideWithEnemy(enemies[i]);
-
   }
 
   // update blocks
