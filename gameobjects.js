@@ -1,6 +1,6 @@
 class Rect {
-  constructor(x,y,w,h, color="darkgreen") {
-    this.color = color;
+  constructor(x,y,w,h, gradient=defaultGradient) {
+    this.gradient = gradient;
     this.pos = new Vector(x,y);
     this.previousPos = new Vector(x,y);
     this.w = w;
@@ -14,7 +14,7 @@ class Rect {
   draw() {
     ctx.save();
     ctx.translate(this.pos.x, this.pos.y);
-    ctx.fillStyle = this.color;
+    ctx.fillStyle = this.gradient;
     ctx.fillRect(0, 0, this.w, this.h);
     ctx.restore();
   }
@@ -43,19 +43,21 @@ class Rect {
 }
 
 class Sprite extends Rect {
-  constructor(x,y,w,h,color="red") {
+  constructor(x,y,w,h, gradient = defaultGradient) {
     super(x,y,w,h);
     this.originalPos = new Vector(this.pos.x, this.pos.y);
     this.velocity = new Vector(0,0);
     this.acceleration = new Vector(0,0);
-    this.color = color;
     this.onTheGround = false;
   }
 
   draw() {
     ctx.save();
       ctx.translate(this.pos.x, this.pos.y);
-      ctx.fillStyle = this.color;
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 2
+      ctx.strokeRect(0, 0, this.w, this.h);
+      ctx.fillStyle = this.gradient;
       ctx.fillRect(0,0,this.w,this.h);
     ctx.restore();
   }
@@ -103,9 +105,9 @@ class Sprite extends Rect {
 }
 
 class Enemy extends Sprite {
-  constructor(x,y,w,h,color="red") {
+  constructor(x,y,w,h, gradient=defaultGradient) {
     super(x,y,w,h);
-    this.color = color
+    this.gradient = gradient
   }
 
   applyForce(f) {
@@ -161,8 +163,9 @@ class Enemy extends Sprite {
 }
 
 class DumDum extends Enemy {
-  constructor(x,y,w,h, color="red") {
+  constructor(x,y,w,h, gradient = defaultGradient) {
     super(x,y,w,h);
+    this.gradient = gradient;
     this.chooseRandomSpeed();
     this.chooseRandomDirection();
   }
@@ -202,9 +205,9 @@ class DumDum extends Enemy {
 }
 
 class Player extends Sprite {
-  constructor(x,y,w,h, color="blue") {
+  constructor(x,y,w,h, gradient=defaultGradient) {
     super(x,y,w,h);
-    this.color = color;
+    this.gradient = gradient;
     this.goRight = false;
     this.goLeft = false;
     this.jump = false;
@@ -283,10 +286,11 @@ class Player extends Sprite {
 }
 
 class BinaryBlock extends Sprite {
-  constructor(x,y,w,h, number, color="orange") {
+  constructor(x,y,w,h, number, gradient = defaultGradient) {
     super(x,y,w,h);
     this.originalY = this.pos.y;
-    this.color = color;
+    this.gradient = gradient;
+    this.status = "inactive";
     this.sinAccum = 0;
     this.number = number;
     this.toggled = false;
@@ -315,13 +319,13 @@ class BinaryBlock extends Sprite {
   }
 
   toggle() {
-    if(this.color === "orange") { // a bit of a hack but this prevents bumping into a block multiple times
+    if(this.status === "inactive") { // a bit of a hack but this prevents bumping into a block multiple times
       this.toggled = true;
       for(let i = 0; i < blocks.length; i++) {
-
         if(blocks[i] === this) {
           if(sequence[i] === "1") {
-            this.color = "lightgreen";
+            this.status = "correct";
+            this.gradient = blockGradientCorrect;
             soundSystem.rightBlockSound.play();
             accum += this.number;
           } else {
@@ -331,7 +335,8 @@ class BinaryBlock extends Sprite {
                 enemies[i].flipDirection();
               }
             }
-            this.color = "red";
+            this.status = "incorrect";
+            this.gradient = blockGradientIncorrect;
             soundSystem.wrongBlockSound.play();
             score-= this.number;
           }

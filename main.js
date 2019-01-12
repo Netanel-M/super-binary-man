@@ -3,6 +3,35 @@ function init() {
   this.canvas = document.querySelector("#clickerCanvas");
   this.ctx = canvas.getContext("2d");
 
+  //graphics
+  this.defaultGradient = ctx.createLinearGradient(0, 10, 0, 50);
+  defaultGradient.addColorStop(0, "darkgreen");
+  defaultGradient.addColorStop(1, "black");
+
+  this.playerGradient = ctx.createLinearGradient(0, 0, 50, 50);
+  playerGradient.addColorStop(0, "blue");
+  playerGradient.addColorStop(1, "black");
+
+  this.enemyGradient = ctx.createLinearGradient(0, 0, 50, 50);
+  enemyGradient.addColorStop(0, "red");
+  enemyGradient.addColorStop(1, "black");
+
+  this.blockGradient = ctx.createLinearGradient(0, 0, 50, 50);
+  blockGradient.addColorStop(0, "yellow");
+  blockGradient.addColorStop(1, "orange");
+
+  this.blockGradientCorrect = ctx.createLinearGradient(0, 0, 50, 50);
+  blockGradientCorrect.addColorStop(0, "lightgreen");
+  blockGradientCorrect.addColorStop(1, "black");
+
+  this.blockGradientIncorrect = ctx.createLinearGradient(0, 0, 50, 50);
+  blockGradientIncorrect.addColorStop(0, "red");
+  blockGradientIncorrect.addColorStop(1, "black");
+
+  this.skyGradient = ctx.createLinearGradient(0, 1000, 0, canvas.height);
+  skyGradient.addColorStop(0,  "#873600");
+  skyGradient.addColorStop(1, "lightblue");
+
   //Sequence related section
   difficulty = 7
   this.sequence = "0".repeat(difficulty);
@@ -52,7 +81,8 @@ function init() {
         (canvas.width / 2 - (140/2) + (difficulty / 2 * 140)) - 35 - i * 140,
         canvas.height - 400,
         70, 70,
-        2**i)
+        2**i,
+        blockGradient)
       this.blocks.push(b);
     }
 
@@ -64,10 +94,10 @@ function init() {
   this.walls.push(leftWall);
   this.walls.push(rightWall);
 
-  this.player = new Player(canvas.width/2-25,canvas.height-150, 50, 75);
+  this.player = new Player(canvas.width/2-25,canvas.height-150, 50, 75, playerGradient);
 
-  this.testEnemy = new DumDum(50, 0, 50, 75);
-  this.testEnemy2 = new DumDum(canvas.width-100, 0, 50, 75);
+  this.testEnemy = new DumDum(50, 0, 50, 75, enemyGradient);
+  this.testEnemy2 = new DumDum(canvas.width-100, 0, 50, 75, enemyGradient);
   this.enemies = [];
   this.enemies.push(testEnemy);
   this.enemies.push(testEnemy2);
@@ -82,8 +112,11 @@ function mainLoop(TIMESTAMP) {
   oldTime = newTime;
 
   ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = skyGradient;
+  ctx.fillRect(0,0, canvas.width, canvas.height);
   // draw texts
   ctx.font = "32pt monospace";
+  ctx.fillStyle = "grey";
   let fontWidth = ctx.measureText("Goal: "+solution).width
   ctx.fillText("Goal: "+ solution, canvas.width/2-fontWidth/2, 200);
   let fontWidthAccum = ctx.measureText("Sum: " + accum).width;

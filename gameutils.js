@@ -41,7 +41,8 @@ function resetBlocks() {
   // reset blocks to default state
   generateRandomSequence();
   for(let i = 0; i < blocks.length; i++) {
-    blocks[i].color = "orange";
+    blocks[i].status = "inactive";
+    blocks[i].gradient = blockGradient;
   }
   solution = parseInt(sequence, 2);
 }
