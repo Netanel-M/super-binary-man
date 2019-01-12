@@ -26,7 +26,7 @@ function resetLevel(lifeDown) {
   player.resetPosition();
   player.onTheGround = false;
   if(lifeDown === true) {
-    player.life -= 1;    
+    player.life -= 1;
   }
 
   accum = 0;
