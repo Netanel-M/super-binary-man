@@ -49,10 +49,6 @@ function init() {
 
     for(let i = sequence.length-1; i>-1; i--) {
       let b = new BinaryBlock(
-        //canvas.width - (i * (canvas.width/8)) - sequence.length*(canvas.width/18.7),
-        //   distannce from left    distance between blocks
-        //let x = (difficulty * 70) * 2
-        //canvas.width - 70*1 - (i * 70*2),
         (canvas.width / 2 - (140/2) + (difficulty / 2 * 140)) - 35 - i * 140,
         canvas.height - 400,
         70, 70,
