@@ -21,3 +21,5 @@ Consult the image on the bottom for gameplay clarification.
 ![gameplay](https://i.imgur.com/eGWEQnE.png)
 
 This project is licensed under the GPL 3 license. View it [here](https://github.com/Netanel-M/super-binary-man/blob/master/LICENSE)
+
+[Check out my website and my tutorials!](https://netanel.xyz)
