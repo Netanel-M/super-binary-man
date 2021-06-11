@@ -232,7 +232,7 @@ class Player extends Sprite {
     }
 
     if (this.jump === true && this.onTheGround === true) {
-      this.acceleration.sub(new Vector(0,canvas.height*12 * dt))
+      this.acceleration.sub(new Vector(0,canvas.height*20 * dt))
       this.onTheGround = false;
       soundSystem.jumpSound.play();
     }
