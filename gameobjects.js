@@ -223,7 +223,7 @@ class Player extends Sprite {
     super.update(dt);
 
     if (this.onTheGround === false) {
-      this.acceleration.add(new Vector(0,canvas.height * 0.03 *dt));
+      this.acceleration.add(new Vector(0,canvas.height * 0.01 *dt));
     }
 
     if(this.jumpDown === true) {
@@ -232,7 +232,7 @@ class Player extends Sprite {
     }
 
     if (this.jump === true && this.onTheGround === true) {
-      this.acceleration.sub(new Vector(0,canvas.height*20 * dt))
+      this.acceleration.sub(new Vector(0,canvas.height*5 * dt))
       this.onTheGround = false;
       soundSystem.jumpSound.play();
     }

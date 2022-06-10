@@ -118,9 +118,9 @@ function mainLoop(TIMESTAMP) {
   ctx.font = "32pt monospace";
   ctx.fillStyle = "grey";
   let fontWidth = ctx.measureText("Goal: "+solution).width
-  ctx.fillText("Goal: "+ solution, canvas.width/2-fontWidth/2, 200);
+  ctx.fillText("Goal: "+ solution, canvas.width-canvas.width/3-fontWidth/2, 100);
   let fontWidthAccum = ctx.measureText("Sum: " + accum).width;
-  ctx.fillText("Sum: " + accum, canvas.width/2 - fontWidthAccum/2, 100);
+  ctx.fillText("Sum: " + accum, canvas.width/3-fontWidth/2, 100);
   ctx.fillText("Score: "  + score, canvas.width/16, 100);
   let fontWidthLife = ctx.measureText("Life: " + player.life).width;;
   ctx.fillText("Life: "  + player.life, canvas.width-canvas.width/16-fontWidthLife, 100);
